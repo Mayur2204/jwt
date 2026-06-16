@@ -1,0 +1,19 @@
+public string GenerateToken(EmployeeRegister user)
+{
+    var claims = new[]
+    {
+        new Claim(ClaimTypes.Name, user.username),
+        new Claim(ClaimTypes.Role, user.Role),
+    };
+
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+
+    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+    var token = new JwtSecurityToken(claims: claims,
+        expires: DateTime.Now.AddHours(1),
+        signingCredentials: creds);
+
+    return new JwtSecurityTokenHandler().WriteToken(token);
+}
+        
