@@ -10,7 +10,10 @@ public string GenerateToken(EmployeeRegister user)
 
     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-    var token = new JwtSecurityToken(claims: claims,
+    var token = new JwtSecurityToken(
+        issuer: configuration["Jwt:Issuer"],
+        audience: configuration["Jwt:Audience"],
+        claims: claims,
         expires: DateTime.Now.AddHours(1),
         signingCredentials: creds);
 
